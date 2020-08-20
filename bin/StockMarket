@@ -1,14 +1,4 @@
-require_relative './Stock.rb'
-require_relative './Investor.rb'
+require_relative '../lib/Stock.rb'
+require_relative '../lib/Investor.rb'
 
-new_stock = Stock.new("FB")
-new_stock.basic_info
-
-
-
-# john = Investor.new("John")
-# puts "new investor #{john.name.upcase}"
-# john.buy_stock("AAPL",2)
-# puts john.cash
-# puts john.stocks.first.price
-
+puts "hello"

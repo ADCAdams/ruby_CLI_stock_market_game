@@ -7,7 +7,8 @@ require_relative './Investor.rb'
 
 
 john = Investor.new("John")
-john.buy_stock("AAPL",2)
-puts "cash = #{john.cash}"
+puts "first cash = #{john.cash}"
+john.buy_stock("AAPL",200)
+puts "after cash = #{john.cash}"
 
 

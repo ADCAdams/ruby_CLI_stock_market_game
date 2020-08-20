@@ -22,17 +22,17 @@ class Investor
 
     def buy_stock(stock_symbol, shares)
         stock_bought = Stock.new(stock_symbol)
-        puts stock_bought
-        puts stock_bought.price
+        puts "price of stock is #{stock_bought.price}"
         money_spent = (stock_bought.price.to_f * shares.to_f)
         puts "money spent #{money_spent}"
         if @cash >= money_spent
-            puts "YES"
             @cash -= money_spent
             stock_bought.shares += shares
             @stocks << stock_bought
         else
-            puts "Not enough money!"
+            possible_shares = (@cash.to_f / stock_bought.price.to_f).floor
+            puts "Not enough money! With your remaining cash you can buy #{possible_shares} of #{stock_bought.symbol}. Enter number of shares to purchase or enter 'n' to cancel transaction."
+
         end
 
     end                                         #ends buy_stock
