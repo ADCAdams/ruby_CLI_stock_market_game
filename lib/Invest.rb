@@ -33,7 +33,6 @@ class CLI_Stock_Game
     def play
         puts "------------------------------------------------------------------------------------"
         puts "#{@name}, you have $#{@player.cash} and #{@player.stocks.length} different stocks."
-        sleep(2)
         puts "* * * * * * * * * * * * * * * * "
         puts "You can choose to:"
         puts "'buy'     - buy shares of a stock" 
@@ -46,12 +45,17 @@ class CLI_Stock_Game
         case gets.strip 
         when "buy"
             buying
+        when 'sell'
+            selling
         when "quit"
             exit
         when "shares"
             shares
+        when "learn"
+            learning
         else
             puts "Please choose by typiing either 'buy', 'sell', 'cash', 'learn',  or 'quit'."
+            play
         end
 
     end
@@ -61,32 +65,69 @@ class CLI_Stock_Game
         puts "Okay! lets buy some stocks!"
         sleep(1)
         puts "Using the ticker symbol, which stock would you like to buy? (e.g. AAPL or TSLA)"
-        user_input_stock = gets.strip
-        puts "And how many shares of #{user_input_stock} would you like to buy?"
+        stock_symbol = get_user_stock
+        puts "And how many shares of #{stock_symbol} would you like to buy?"
         user_input_shares = gets.strip
         user_input_shares = user_input_shares.to_i
 
-        @player.buy_stock(user_input_stock,user_input_shares)
+        @player.buy_stock(stock_symbol,user_input_shares)
+        puts "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        puts "Purchased #{@player.last_quantity} shares of #{@player.last_stock_bought_sold},"
+        puts "         at #{@player.last_price} per share,"
+        puts "              for a total purchase of #{(@player.last_quantity.to_f * @player.last_price.to_f).round(2)}."
+        puts "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        sleep(4)
         play
     end                             #ends buying
+
+    def selling
+        
+        puts "Okay! lets sell some stocks!"
+        sleep(1)
+        puts "Here are your stocks:"
+        sleep(3)
+        @player.stocks.each do |stock|
+            puts "#{stock.symbol} - #{stock.company}" 
+        end
+        puts "Using the ticker symbol, which of your stock would you like to sell? (e.g. AAPL or TSLA)"
+
+        stock_symbol = get_user_stock
+
+        puts "And how many shares of #{stock_symbol} would you like to sell?"
+        user_input_shares = gets.strip
+        user_input_shares = user_input_shares.to_i
+
+        @player.sell_stock(stock_symbol,user_input_shares)
+        play
+    end                             #ends buying
+
+    def get_user_stock
+        user_input_stock = gets.strip
+        user_input_stock.upcase 
+    end 
     
     def shares
-        puts "Which stock would you like to look at?"
-        user_input_stock = gets.strip
-        stock_symbol = user_input_stock.upcase
+        puts "Enter stock symbol to fetch your shares"
+        stock_symbol = get_user_stock
         index = @player.check_if_owned(stock_symbol)
         if index != false
             puts "You have #{@player.stocks[index].shares} shares of #{stock_symbol}."
+            sleep(3)
         else
-            "You do not own this stock."
+            puts "You do not own this stock."
+            sleep(2)
         end
         play
     end
 
     def learning
+        puts "Which stock would you like to learn about?"
+        stock_symbol = get_user_stock
+        puts "*********************"
         puts "You can see:"
-        puts "  * 'name' Company Name"
+        puts "  * 'name'    Company Name"
         puts "  * 'address' Company Address"
+        puts "*****enter command******"
     end
 
 end

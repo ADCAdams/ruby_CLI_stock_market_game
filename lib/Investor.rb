@@ -7,6 +7,7 @@ require_relative './Stock.rb'
 class Investor
 
     attr_accessor :name, :cash, :stocks
+    attr_reader :last_price, :last_quantity, :last_stock_bought_sold
 
 
     def initialize(name, cash = 10000)
@@ -28,24 +29,29 @@ class Investor
         else
             stock_bought = Stock.new(stock_symbol)
         end
+        @last_price = (stock_bought.price.to_f).round(2)           #used to easily say what we bought and for what
+        @last_quantity = shares
+        money_spent = (@last_price.to_f * @last_quantity.to_f).round(2)
+        
 
-        #puts "price of stock is #{stock_bought.price}"
-        money_spent = (stock_bought.price.to_f * shares.to_f).round(2)
-        puts "cash spent #{money_spent}"
-
-        #puts "money spent #{money_spent}"
         if @cash >= money_spent                             #checks if viable transaction
             @cash = (@cash - money_spent).round(2)
             stock_bought.shares += shares
+            @last_stock_bought_sold = stock_bought 
             @stocks << stock_bought if owned == false
         else
             possible_shares = (@cash.to_f / stock_bought.price.to_f).floor
+            @last_quantity = nil
+            @last_price = nil
+            @last_stock_bought_sold = nil 
             puts "You don't enough cash!"
             sleep(1)
             puts "With your remaining cash, you *can*, however, buy #{possible_shares} shares of #{stock_bought.symbol}."
         end
 
     end                                         #ends buy_stock
+
+
 
     def sell_stock(stock_symbol, shares)
         stock_symbol = stock_symbol.upcase
@@ -54,7 +60,6 @@ class Investor
 
         @stocks.each_with_index do |stocky, index|                        #checking in this investor's stocks
             if stocky.symbol.upcase == stock_symbol.upcase      #checking for match of stock
-                puts "FOUND"
                 if stocky.shares >= shares  #checks if less or equal to total shares being sold
                     cash_returned = (stocky.get_current_price.to_f * shares.to_f).round(2)       #gets amount of cash coming back
                     puts "cash returned #{cash_returned}"
