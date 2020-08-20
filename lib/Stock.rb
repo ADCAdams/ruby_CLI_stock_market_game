@@ -1,16 +1,22 @@
 require 'net/http'
 require 'open-uri'
 require 'json'
+require_relative './Investor.rb'
 
 class Stock
 
-    attr_accessor :symbol 
-    attr_reader :json_stock
+    attr_accessor :symbol, :shares
+    attr_reader :json_stock, :address, :price, :company
+
+    @@all = []
 
     def initialize(stock)
+        puts "new stock made #{stock}"
         @symbol = stock
+        @shares = 0
         get_stock
-
+        get_basic_info
+        @@all << self
     end
 
 
@@ -36,20 +42,22 @@ class Stock
     def get_current_price
         get_stock()
         
-        @json_stock["price"]["regularMarketPrice"]["fmt"]
-        
+        @price  = @json_stock["price"]["regularMarketPrice"]["fmt"]
+        @price
     end                     #ends current price meth
     def get_price
         
-        @json_stock["price"]["regularMarketPrice"]["fmt"]
-        
+        @price  = @json_stock["price"]["regularMarketPrice"]["fmt"]
+        @price
     end                     #ends get price meth
+
 
     def get_name
         
         @json_stock["quoteType"]["longName"]
         
     end                     #ends get price meth
+
 
     def get_address
         address = ""
@@ -61,16 +69,22 @@ class Stock
     end
 
     def basic_info
-        puts "Symbol: #{self.symbol}"
-        puts "Company: #{self.get_name}"
-        puts "Address: #{self.get_address}"
-        puts "Current Price: #{self.get_price}"
+        puts "Symbol: #{@symbol}"
+        puts "Company: #{@company}"
+        puts "Address: #{@address}"
+        puts "Current Price: #{@price}"
+    end
+
+    def get_basic_info
+        get_name
+        get_address
+        get_price
     end
 
 
 
 end
 
-new_stock = Stock.new("FB")
-new_stock.basic_info
+# new_stock = Stock.new("FB")
+# new_stock.basic_info
 
