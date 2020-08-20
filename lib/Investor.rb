@@ -21,39 +21,47 @@ class Investor
     end
 
     def buy_stock(stock_symbol, shares)
+        stock_symbol = stock_symbol.upcase
         stock_bought = Stock.new(stock_symbol)
         puts "price of stock is #{stock_bought.price}"
         money_spent = (stock_bought.price.to_f * shares.to_f)
         puts "money spent #{money_spent}"
-        if @cash >= money_spent
+        if @cash >= money_spent                             #checks if viable transaction
             @cash -= money_spent
             stock_bought.shares += shares
             @stocks << stock_bought
         else
             possible_shares = (@cash.to_f / stock_bought.price.to_f).floor
-            puts "Not enough money! With your remaining cash you can buy #{possible_shares} of #{stock_bought.symbol}. Enter number of shares to purchase or enter 'n' to cancel transaction."
+            puts "Not enough money! With your remaining cash, you *can* buy #{possible_shares} shares of #{stock_bought.symbol}."
+            puts "Enter number (#) of shares of #{stock_bought.symbol} to purchase or enter 'n'/'N'/'No' to cancel transaction."
 
         end
 
     end                                         #ends buy_stock
 
-    # def sell_stock(stock_symbol, shares)
+    def sell_stock(stock_symbol, shares)
+        stock_symbol = stock_symbol.upcase
+        sold_stock = nil                    #stock to be sold
+        cash_returned = 0
 
-    #     stock_bought = Stock.new(stock_symbol)
-    #     puts stock_bought
-    #     puts stock_bought.price
-    #     money_spent = (stock_bought.price.to_f * shares.to_f)
-    #     puts "money spent #{money_spent}"
-    #     if @cash >= money_spent
-    #         puts "YES"
-    #         @cash -= money_spent
-    #         stock_bought.shares += shares
-    #         @stocks << stock_bought
-    #     else
-    #         puts "Not enough money!"
-    #     end
+        @stocks.each_with_index do |stocky, index|                        #checking in this investor's stocks
+            if stocky.symbol.upcase == stock_symbol.upcase      #checking for match of stock
+                puts "FOUND"
+                if stocky.shares >= shares  #checks if less or equal to total shares being sold
+                    cash_returned = (stocky.get_current_price.to_f * shares.to_f).round(2)       #gets amount of cash coming back
+                    stocky.shares -= shares                     #removes shares sold
+                    @cash += cash_returned                      #applies cash coming back
+                    @stocks.delete_at(index) if stocky.shares == 0              #deletes stock from @stocks if there are no shares left
 
-    # end                                         #ends SELL_stock
+                else 
+                    puts "You are trying to sell more shares than you own. You own #{stocky.shares}."
+                end
+
+            else
+                puts "Could not find your stock!"
+            end
+        end                         #ends each
+    end                                         #ends SELL_stock
 
 
     def invest
