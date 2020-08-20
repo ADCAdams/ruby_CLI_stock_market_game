@@ -2,10 +2,7 @@ require 'net/http'
 require 'open-uri'
 require 'json'
 
-
-
 class Stock
-
 
     attr_accessor :symbol 
     attr_reader :json_stock
@@ -13,6 +10,7 @@ class Stock
     def initialize(stock)
         @symbol = stock
         get_stock
+
     end
 
 
@@ -38,9 +36,20 @@ class Stock
     def get_current_price
         get_stock()
         
-        return @json_stock["price"]["regularMarketPrice"]["fmt"]
+        @json_stock["price"]["regularMarketPrice"]["fmt"]
         
-    end #ends current price meth
+    end                     #ends current price meth
+    def get_price
+        
+        @json_stock["price"]["regularMarketPrice"]["fmt"]
+        
+    end                     #ends get price meth
+
+    def get_name
+        
+        @json_stock["quoteType"]["longName"]
+        
+    end                     #ends get price meth
 
     def get_address
         address = ""
@@ -53,14 +62,15 @@ class Stock
 
     def basic_info
         puts "Symbol: #{self.symbol}"
+        puts "Company: #{self.get_name}"
         puts "Address: #{self.get_address}"
-        puts "Current Price: #{self.get_current_price}"
+        puts "Current Price: #{self.get_price}"
     end
 
 
 
 end
 
-
+new_stock = Stock.new("FB")
 new_stock.basic_info
 
