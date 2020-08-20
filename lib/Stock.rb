@@ -12,6 +12,7 @@ class Stock
 
     def initialize(stock)
         @symbol = stock
+        get_stock
     end
 
 
@@ -37,12 +38,29 @@ class Stock
     def get_current_price
         get_stock()
         
-        return @json_stock["price"]["regularMarketPrice"]["raw"]
+        return @json_stock["price"]["regularMarketPrice"]["fmt"]
         
     end #ends current price meth
+
+    def get_address
+        address = ""
+        address = address + @json_stock["summaryProfile"]["address1"]
+        address = address + ", " + @json_stock["summaryProfile"]["city"]
+        address = address + ", " +  @json_stock["summaryProfile"]["state"]
+        address = address + "  " +  @json_stock["summaryProfile"]["zip"]
+        address
+    end
+
+    def basic_info
+        puts "Symbol: #{self.symbol}"
+        puts "Address: #{self.get_address}"
+        puts "Current Price: #{self.get_current_price}"
+    end
+
 
 
 end
 
-new = Stock.new("AAPL")
-puts new.get_current_price
+
+new_stock.basic_info
+
