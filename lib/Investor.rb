@@ -10,7 +10,6 @@ class Investor
 
 
     def initialize(name, cash = 10000)
-        puts "new investor created #{name}"
         @name = name 
         @cash = cash 
         @stocks = []
@@ -64,11 +63,7 @@ class Investor
     end                                         #ends SELL_stock
 
 
-    def invest
-        puts "Welcome shrewd investor! What is your name?"
-        user_input_name = gets.strip
-    end
-
+    
 
 end                                             #ends Class
 
