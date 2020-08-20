@@ -21,19 +21,28 @@ class Investor
 
     def buy_stock(stock_symbol, shares)
         stock_symbol = stock_symbol.upcase
-        stock_bought = Stock.new(stock_symbol)
-        puts "price of stock is #{stock_bought.price}"
-        money_spent = (stock_bought.price.to_f * shares.to_f)
-        puts "money spent #{money_spent}"
+        owned = false
+        if check_if_owned(stock_symbol) != false 
+            owned = true
+            stock_bought = @stocks[check_if_owned(stock_symbol)]
+        else
+            stock_bought = Stock.new(stock_symbol)
+        end
+
+        #puts "price of stock is #{stock_bought.price}"
+        money_spent = (stock_bought.price.to_f * shares.to_f).round(2)
+        puts "cash spent #{money_spent}"
+
+        #puts "money spent #{money_spent}"
         if @cash >= money_spent                             #checks if viable transaction
-            @cash -= money_spent
+            @cash = (@cash - money_spent).round(2)
             stock_bought.shares += shares
-            @stocks << stock_bought
+            @stocks << stock_bought if owned == false
         else
             possible_shares = (@cash.to_f / stock_bought.price.to_f).floor
-            puts "Not enough money! With your remaining cash, you *can* buy #{possible_shares} shares of #{stock_bought.symbol}."
-            puts "Enter number (#) of shares of #{stock_bought.symbol} to purchase or enter 'n'/'N'/'No' to cancel transaction."
-
+            puts "You don't enough cash!"
+            sleep(1)
+            puts "With your remaining cash, you *can*, however, buy #{possible_shares} shares of #{stock_bought.symbol}."
         end
 
     end                                         #ends buy_stock
@@ -48,6 +57,7 @@ class Investor
                 puts "FOUND"
                 if stocky.shares >= shares  #checks if less or equal to total shares being sold
                     cash_returned = (stocky.get_current_price.to_f * shares.to_f).round(2)       #gets amount of cash coming back
+                    puts "cash returned #{cash_returned}"
                     stocky.shares -= shares                     #removes shares sold
                     @cash += cash_returned                      #applies cash coming back
                     @stocks.delete_at(index) if stocky.shares == 0              #deletes stock from @stocks if there are no shares left
@@ -62,8 +72,14 @@ class Investor
         end                         #ends each
     end                                         #ends SELL_stock
 
+    def check_if_owned(stock_symbol)
+        @stocks.each_with_index do |stocky, index|                        #checking in this investor's stocks
+            return index if stocky.symbol.upcase == stock_symbol.upcase      #checking for match of stock
+        end
+        return false 
+    end
 
-    
+
 
 end                                             #ends Class
 
