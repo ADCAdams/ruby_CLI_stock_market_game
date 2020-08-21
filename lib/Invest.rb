@@ -40,6 +40,7 @@ class CLI_Stock_Game
         puts "'cash'    - check how much cash you have available"
         puts "'learn'   - learn details about any stock" 
         puts "'shares'  - see how many shares you have of owned stocks"
+        puts "'value'   - calculate total portfolio value"
         puts "or 'quit'"
         puts "* * * * * * * * * * * * * * * * "
         case gets.strip 
@@ -53,6 +54,8 @@ class CLI_Stock_Game
             shares
         when "learn"
             learning
+        when 'value'
+            valuing
         else
             puts "Please choose by typiing either 'buy', 'sell', 'cash', 'learn',  or 'quit'."
             play
@@ -98,6 +101,12 @@ class CLI_Stock_Game
         user_input_shares = user_input_shares.to_i
 
         @player.sell_stock(stock_symbol,user_input_shares)
+        puts "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        puts "Sold #{@player.last_quantity} shares of #{@player.last_stock_bought_sold},"
+        puts "         at #{@player.last_price} per share,"
+        puts "              for a total purchase of #{(@player.last_quantity.to_f * @player.last_price.to_f).round(2)}."
+        puts "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        sleep(4)
         play
     end                             #ends buying
 
@@ -123,12 +132,31 @@ class CLI_Stock_Game
     def learning
         puts "Which stock would you like to learn about?"
         stock_symbol = get_user_stock
+        
         puts "*********************"
         puts "You can see:"
         puts "  * 'name'    Company Name"
         puts "  * 'address' Company Address"
         puts "*****enter command******"
+        case gets.strip 
+        when "name"
+            stock_symbol.company
+        when 'address'
+            stock_symbol.address
+        else
+            puts "Please enter either 'name' or 'address'"
+            learning
+        end
+        play
+
+    end         #ends learning
+
+    def valuing
+        puts "The total value of your cash and stock portfolio" 
+        puts "      is #{@player.portfolio_value}"
+        play
     end
 
-end
+
+end     #ends class
 

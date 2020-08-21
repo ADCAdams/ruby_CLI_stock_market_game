@@ -61,8 +61,10 @@ class Investor
         @stocks.each_with_index do |stocky, index|                        #checking in this investor's stocks
             if stocky.symbol.upcase == stock_symbol.upcase      #checking for match of stock
                 if stocky.shares >= shares  #checks if less or equal to total shares being sold
+                    @last_quantity = shares 
+                    @last_price = stocky.get_current_price
+                    @last_stock_bought_sold = stocky
                     cash_returned = (stocky.get_current_price.to_f * shares.to_f).round(2)       #gets amount of cash coming back
-                    puts "cash returned #{cash_returned}"
                     stocky.shares -= shares                     #removes shares sold
                     @cash += cash_returned                      #applies cash coming back
                     @stocks.delete_at(index) if stocky.shares == 0              #deletes stock from @stocks if there are no shares left
@@ -84,6 +86,20 @@ class Investor
         return false 
     end
 
+
+    def portfolio_value
+        total_stock_val = @cash
+        @stocks.each do |stocky|                        
+            total_stock_val += stock_value(stocky)
+        end
+        total_stock_val
+    end
+
+    def stock_value(stock_obj)
+        (stock_obj.shares.to_f * stock_obj.get_current_price.to_f).round(2)
+    end
+
+    
 
 
 end                                             #ends Class
