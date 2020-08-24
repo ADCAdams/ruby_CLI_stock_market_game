@@ -64,7 +64,8 @@ class Stock
         address = address + ", " + @json_stock["summaryProfile"]["city"]
         address = address + ", " +  @json_stock["summaryProfile"]["state"]
         address = address + "  " +  @json_stock["summaryProfile"]["zip"]
-        address
+        @address = address
+        @address
     end
 
     def basic_info

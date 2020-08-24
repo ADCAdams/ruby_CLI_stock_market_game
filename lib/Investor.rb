@@ -8,7 +8,7 @@ require_relative './Stock.rb'
 class Investor
 
     attr_accessor :name, :stocks
-    attr_reader :last_price, :last_quantity, :last_stock_bought_sold, :cash
+    attr_reader :last_price, :last_quantity, :last_stock_bought_sold, :cash, :possible_purchase_shares
 
     def cash=(number)
         puts "HIHIHHIHIHI #{number}"
@@ -41,21 +41,17 @@ class Investor
         @last_quantity = shares.to_f
 
         money_spent = (@last_price * @last_quantity)
-        
+        @last_stock_bought_sold = stock_bought 
 
         if @cash >= money_spent                             #checks if viable transaction
             @cash = (@cash - money_spent)
             stock_bought.shares += shares
-            @last_stock_bought_sold = stock_bought 
+
             @stocks << stock_bought if owned == false
         else
-            possible_shares = (@cash.to_f / stock_bought.price)
+            @possible_purchase_shares = (@cash.to_f / stock_bought.price).floor.to_i
             @last_quantity = nil
             @last_price = nil
-            @last_stock_bought_sold = nil 
-            puts "You don't have enough cash!"
-            sleep(1)
-            puts "With your remaining cash, you *can*, however, buy #{possible_shares} shares of #{stock_bought.symbol}."
         end
 
     end                                         #ends buy_stock
