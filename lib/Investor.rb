@@ -10,11 +10,6 @@ class Investor
     attr_accessor :name, :stocks
     attr_reader :last_price, :last_quantity, :last_stock_bought_sold, :cash, :possible_purchase_shares
 
-    def cash=(number)
-        puts "HIHIHHIHIHI #{number}"
-        @cash = number.round(2)
-    end
-
 
     def initialize(name, cash = 10000)
         @name = name 
@@ -103,9 +98,3 @@ class Investor
 
 
 end                                             #ends Class
-
-# john = Investor.new("John")
-# puts "new investor #{john.name.upcase}"
-# john.buy_stock("AAPL",2)
-# puts john.cash
-# puts john.stocks.first.price

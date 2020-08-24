@@ -21,12 +21,10 @@ class CLI_Stock_Game
         user_input_name = gets.strip
         @name = user_input_name
         puts "Hi, #{@name}!"
-        sleep(2)
-        puts "In this game we'll be using real-time stock market data."
-        puts "You can choose to buy and sell any stock you like!"
-        
+        sleep(1)
+        puts "In this game we'll be using real-time stock market data."        
         @player = Investor.new(@name)
-        sleep(4)
+        sleep(2)
         
     end
 

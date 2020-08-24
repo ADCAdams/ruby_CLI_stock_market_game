@@ -84,7 +84,3 @@ class Stock
 
 
 end
-
-# new_stock = Stock.new("FB")
-# new_stock.basic_info
-
