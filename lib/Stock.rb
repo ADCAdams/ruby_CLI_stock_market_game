@@ -11,7 +11,6 @@ class Stock
     @@all = []
 
     def initialize(stock)
-        puts "new stock made #{stock}"
         @symbol = stock
         @shares = 0
         get_stock
@@ -42,20 +41,20 @@ class Stock
     def get_current_price
         get_stock()
         
-        @price  = @json_stock["price"]["regularMarketPrice"]["fmt"]
+        @price  = @json_stock["price"]["regularMarketPrice"]["raw"]
         @price
     end                     #ends current price meth
     def get_price
         
-        @price  = @json_stock["price"]["regularMarketPrice"]["fmt"]
+        @price  = @json_stock["price"]["regularMarketPrice"]["raw"]
         @price
     end                     #ends get price meth
 
 
     def get_name
         
-        @json_stock["quoteType"]["longName"]
-        
+        @company = @json_stock["quoteType"]["longName"]
+        @company
     end                     #ends get price meth
 
 

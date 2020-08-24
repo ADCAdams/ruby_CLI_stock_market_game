@@ -1,6 +1,7 @@
 require_relative './Stock.rb'
 require_relative './Investor.rb'
 
+
 class CLI_Stock_Game
 
     attr_accessor :name, :player 
@@ -32,7 +33,7 @@ class CLI_Stock_Game
 
     def play
         puts "------------------------------------------------------------------------------------"
-        puts "#{@name}, you have $#{@player.cash} and #{@player.stocks.length} different stocks."
+        puts "#{@name}, you have $#{(@player.cash).round(2)} and #{@player.stocks.length} different stocks."
         puts "* * * * * * * * * * * * * * * * "
         puts "You can choose to:"
         puts "'buy'     - buy shares of a stock" 
@@ -75,9 +76,9 @@ class CLI_Stock_Game
 
         @player.buy_stock(stock_symbol,user_input_shares)
         puts "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-        puts "Purchased #{@player.last_quantity} shares of #{@player.last_stock_bought_sold},"
+        puts "Purchased #{@player.last_quantity} shares of #{@player.last_stock_bought_sold.symbol},"
         puts "         at #{@player.last_price} per share,"
-        puts "              for a total purchase of #{(@player.last_quantity.to_f * @player.last_price.to_f).round(2)}."
+        puts "              for a total purchase of #{(@player.last_quantity * @player.last_price).round(2)}."
         puts "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
         sleep(4)
         play
@@ -102,7 +103,7 @@ class CLI_Stock_Game
 
         @player.sell_stock(stock_symbol,user_input_shares)
         puts "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-        puts "Sold #{@player.last_quantity} shares of #{@player.last_stock_bought_sold},"
+        puts "Sold #{@player.last_quantity} shares of #{@player.last_stock_bought_sold.symbol},"
         puts "         at #{@player.last_price} per share,"
         puts "              for a total purchase of #{(@player.last_quantity.to_f * @player.last_price.to_f).round(2)}."
         puts "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
@@ -132,7 +133,7 @@ class CLI_Stock_Game
     def learning
         puts "Which stock would you like to learn about?"
         stock_symbol = get_user_stock
-        
+        stock_symbol = Stock.new(stock_symbol)
         puts "*********************"
         puts "You can see:"
         puts "  * 'name'    Company Name"
@@ -140,9 +141,9 @@ class CLI_Stock_Game
         puts "*****enter command******"
         case gets.strip 
         when "name"
-            stock_symbol.company
+            puts stock_symbol.company
         when 'address'
-            stock_symbol.address
+            puts stock_symbol.address
         else
             puts "Please enter either 'name' or 'address'"
             learning
@@ -156,6 +157,8 @@ class CLI_Stock_Game
         puts "      is #{@player.portfolio_value}"
         play
     end
+
+
 
 
 end     #ends class
