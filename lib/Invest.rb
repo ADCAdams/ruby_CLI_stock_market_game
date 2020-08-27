@@ -34,28 +34,28 @@ class CLI_Stock_Game
         puts "#{@name}, you have $#{(@player.cash).round(2)} and #{@player.stocks.length} different stocks."
         puts "* * * * * * * * * * * * * * * * "
         puts "You can choose to:"
-        puts "'buy'     - buy shares of a stock" 
-        puts "'sell'    - sell a stock you own" 
         puts "'quote    - get the current price of a stock"
         puts "'learn'   - learn details about any stock" 
+        puts "'buy'     - buy shares of a stock" 
+        puts "'sell'    - sell a stock you own" 
         puts "'shares'  - see how many shares you have of owned stocks"
         puts "'value'   - calculate total portfolio value"
         puts "or 'quit'"
         puts "* * * * * * * * * * * * * * * * "
         case gets.strip 
-        when "buy"
+        when "buy","b"
             buying
-        when 'sell'
+        when 'sell',"s"
             selling
-        when "quit"
+        when "quit","qt"
             exit
-        when "quote"
+        when "quote","q"
             quoting
-        when "shares"
+        when "shares","sh"
             shares
-        when "learn"
+        when "learn","l"
             learning
-        when 'value'
+        when 'value',"v"
             valuing
         else
             puts "Please choose by typing either 'buy', 'sell', 'cash', 'learn',  or 'quit'."
@@ -64,6 +64,7 @@ class CLI_Stock_Game
 
     end
     def quoting
+        puts "Enter stock symbol to retrieve current market price per share"
         stock_symbol = get_user_stock
         new_stock = Stock.new(stock_symbol)
 
@@ -93,8 +94,8 @@ class CLI_Stock_Game
         else
             puts "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
             puts "Purchased #{@player.last_quantity} shares of #{@player.last_stock_bought_sold.symbol},"
-            puts "         at #{@player.last_price} per share,"
-            puts "              for a total purchase of #{(@player.last_quantity * @player.last_price).round(2)}."
+            puts "         at $#{@player.last_price} per share,"
+            puts "              for a total purchase of $#{(@player.last_quantity * @player.last_price).round(2)}."
             puts "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
             sleep(4)
             play
@@ -123,8 +124,8 @@ class CLI_Stock_Game
         @player.sell_stock(stock_symbol,user_input_shares)
         puts "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
         puts "Sold #{@player.last_quantity} shares of #{@player.last_stock_bought_sold.symbol},"
-        puts "         at #{@player.last_price} per share,"
-        puts "              for a total purchase of #{(@player.last_quantity.to_f * @player.last_price.to_f).round(2)}."
+        puts "         at $#{@player.last_price} per share,"
+        puts "              for a total purchase of $#{(@player.last_quantity.to_f * @player.last_price.to_f).round(2)}."
         puts "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
         sleep(4)
         play
@@ -156,9 +157,9 @@ class CLI_Stock_Game
         puts "  * 'address' Company Address"
         puts "*****enter command******"
         case gets.strip 
-        when "name"
+        when "name","n"
             puts stock_symbol.company
-        when 'address'
+        when 'address',"a"
             puts stock_symbol.address
         else
             puts "Please enter either 'name' or 'address'"
@@ -171,7 +172,7 @@ class CLI_Stock_Game
 
     def valuing
         puts "The total value of your cash and stock portfolio" 
-        puts "      is #{@player.portfolio_value}"
+        puts "      is #{@player.portfolio_value.round(2)}"
         sleep (2)
         play
     end
