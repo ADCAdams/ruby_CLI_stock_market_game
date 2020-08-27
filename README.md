@@ -1,4 +1,4 @@
-# Project1Repo
+# ruby CLI Stock Market Game
 
 Welcome to this Ruby Stock Market game! Using a Yahoo API, you can buy and sell stocks in real-time, using fake money!
 
