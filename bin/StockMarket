@@ -1,6 +1,8 @@
+#!/usr/bin/env ruby
+
 require_relative '../lib/Stock.rb'
 require_relative '../lib/Investor.rb'
-require_relative '../lib/Invest.rb'
+require_relative '../lib/Invest.rb'         
 
 
 newGame = CLI_Stock_Game.new

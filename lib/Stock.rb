@@ -1,21 +1,23 @@
 require 'net/http'
 require 'open-uri'
 require 'json'
-require_relative './Investor.rb'
+# require_relative './Investor.rb'
+
+#add api class and get rid of require relatives
 
 class Stock
 
     attr_accessor :symbol, :shares
     attr_reader :json_stock, :address, :price, :company
 
-    @@all = []
+    #@@all = []
 
     def initialize(stock)
         @symbol = stock
         @shares = 0
         get_stock
         get_basic_info
-        @@all << self
+        #@@all << self
     end
 
 
@@ -34,21 +36,23 @@ class Stock
         response1 = http.request(request)
         
         @json_stock = JSON.parse(response1.body)
+
         
     end
         
         
     def get_current_price
         get_stock()
-        
+
         @price  = @json_stock["price"]["regularMarketPrice"]["raw"]
         @price
-    end                     #ends current price meth
+    end                     #ends current price method
+
     def get_price
         
         @price  = @json_stock["price"]["regularMarketPrice"]["raw"]
         @price
-    end                     #ends get price meth
+    end                     #ends get price method
 
 
     def get_name

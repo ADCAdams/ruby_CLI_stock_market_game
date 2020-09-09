@@ -1,5 +1,5 @@
-require_relative './Stock.rb'
-require_relative './Investor.rb'
+# require_relative './Stock.rb'
+# require_relative './Investor.rb'
 
 
 class CLI_Stock_Game
@@ -85,6 +85,7 @@ class CLI_Stock_Game
         user_input_shares = user_input_shares.to_i
 
         @player.buy_stock(stock_symbol,user_input_shares)
+        
         if @player.last_price == nil
             puts "You don't have enough cash!"
             sleep(1)
