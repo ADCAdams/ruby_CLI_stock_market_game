@@ -1,6 +1,3 @@
-# require_relative './Stock.rb'
-# require_relative './Investor.rb'
-
 
 class CLI_Stock_Game
 
